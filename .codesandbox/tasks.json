@@ -1,0 +1,13 @@
+{
+  "$schema": "https://codesandbox.io/schemas/tasks.json",
+  "setupTasks": [
+    { "name": "Install", "command": "bun install" }
+  ],
+  "tasks": {
+    "run": {
+      "name": "Run CLI",
+      "command": "bun run mycli",
+      "runAtStart": true
+    }
+  }
+}
