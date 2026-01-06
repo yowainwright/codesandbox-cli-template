@@ -12,12 +12,27 @@ bun run setup
 
 ## Structure
 
+After setup, your project will have an idiomatic structure for your chosen language:
+
+**Bun/Node.js:**
 ```
-├── src/              # CLI source (Bun/Node/Go/Python)
-├── packages/
-│   └── demo/         # Target package CLI operates on
-└── .codesandbox/
-    └── tasks.json
+src/index.{ts,js}
+demo/
+```
+
+**Go:**
+```
+cmd/mycli/main.go
+demo/
+go.mod
+go.work
+```
+
+**Python:**
+```
+src/mycli/
+demo/
+pyproject.toml
 ```
 
 ## Run

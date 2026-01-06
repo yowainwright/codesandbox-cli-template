@@ -4,6 +4,6 @@ import { fileURLToPath } from "node:url";
 import { resolve, dirname } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const target = resolve(__dirname, "../packages/demo/touched.txt");
+const target = resolve(__dirname, "../demo/touched.txt");
 writeFileSync(target, `Updated at: ${new Date().toISOString()}\n`);
-console.log("Touched packages/demo/touched.txt");
+console.log("Touched demo/touched.txt");

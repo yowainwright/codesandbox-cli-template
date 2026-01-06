@@ -7,7 +7,7 @@ export interface TaskConfig {
 
 export interface LanguageConfig {
   name: string;
-  keep: string[];
+  demoDir: string;
   remove: string[];
   tasks: TaskConfig;
   rootPkg: (name: string) => Record<string, unknown>;

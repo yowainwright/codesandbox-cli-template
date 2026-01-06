@@ -1,4 +1,4 @@
-import { rmSync } from "node:fs";
+import { rmSync, cpSync } from "node:fs";
 import {
   languages,
   README_RUN_PATTERN,
@@ -31,8 +31,13 @@ async function selectLanguage(): Promise<LanguageConfig> {
 
 function removeUnusedFiles(lang: LanguageConfig) {
   for (const file of lang.remove) {
-    rmSync(file, { force: true });
+    rmSync(file, { recursive: true, force: true });
   }
+}
+
+function renameDemo(lang: LanguageConfig) {
+  cpSync(lang.demoDir, "demo", { recursive: true });
+  rmSync(lang.demoDir, { recursive: true, force: true });
 }
 
 async function writeTasks(lang: LanguageConfig) {
@@ -44,9 +49,10 @@ async function writeTasks(lang: LanguageConfig) {
 }
 
 async function updatePackageJson(lang: LanguageConfig) {
-  const currentPkg = await Bun.file("package.json").json();
-  const newPkg = lang.rootPkg(currentPkg.name || "my-cli-demo");
-  await Bun.write("package.json", JSON.stringify(newPkg, null, 2));
+  const pkg = lang.rootPkg("mycli");
+  if (Object.keys(pkg).length > 0) {
+    await Bun.write("package.json", JSON.stringify(pkg, null, 2));
+  }
 }
 
 async function updateReadme(lang: LanguageConfig) {
@@ -61,16 +67,22 @@ async function updateReadme(lang: LanguageConfig) {
 function cleanup() {
   rmSync("scripts", { recursive: true, force: true });
   rmSync(".github/workflows/setup-template.yml", { force: true });
+  rmSync("Dockerfile", { force: true });
 }
 
 export async function setup() {
+  const isTest = process.argv.includes("--test");
   const lang = await selectLanguage();
 
   removeUnusedFiles(lang);
+  renameDemo(lang);
   await writeTasks(lang);
   await updatePackageJson(lang);
   await updateReadme(lang);
-  cleanup();
+
+  if (!isTest) {
+    cleanup();
+  }
 
   console.log(`\nDone! Run: ${lang.run}`);
 }

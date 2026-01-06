@@ -6,8 +6,18 @@ export const README_RUN_TEMPLATE = "## Run\n\n```bash\n{{cmd}}\n```";
 export const languages: Record<string, LanguageConfig> = {
   bun: {
     name: "Bun",
-    keep: ["src/index.ts", "tsconfig.json", "packages/demo/tsconfig.json"],
-    remove: ["src/index.js", "src/main.go", "src/__init__.py", "src/__main__.py", "go.mod"],
+    demoDir: "demo-ts",
+    remove: [
+      "src/index.js",
+      "cmd",
+      "src/mycli",
+      "demo-go",
+      "demo-py",
+      "demo-js",
+      "go.mod",
+      "go.work",
+      "pyproject.toml",
+    ],
     tasks: {
       setupTasks: [{ name: "Install", command: "bun install" }],
       tasks: {
@@ -25,8 +35,19 @@ export const languages: Record<string, LanguageConfig> = {
 
   node: {
     name: "Node.js",
-    keep: ["src/index.js", "tsconfig.json", "packages/demo/tsconfig.json"],
-    remove: ["src/index.ts", "src/main.go", "src/__init__.py", "src/__main__.py", "go.mod"],
+    demoDir: "demo-js",
+    remove: [
+      "src/index.ts",
+      "cmd",
+      "src/mycli",
+      "demo-go",
+      "demo-py",
+      "demo-ts",
+      "go.mod",
+      "go.work",
+      "pyproject.toml",
+      "tsconfig.json",
+    ],
     tasks: {
       setupTasks: [{ name: "Install", command: "npm install" }],
       tasks: {
@@ -45,30 +66,44 @@ export const languages: Record<string, LanguageConfig> = {
 
   go: {
     name: "Go",
-    keep: ["src/main.go", "go.mod"],
-    remove: ["src/index.ts", "src/index.js", "src/__init__.py", "src/__main__.py", "tsconfig.json", "packages/demo/tsconfig.json"],
+    demoDir: "demo-go",
+    remove: [
+      "src",
+      "demo-py",
+      "demo-ts",
+      "demo-js",
+      "pyproject.toml",
+      "tsconfig.json",
+      "package.json",
+    ],
     tasks: {
       setupTasks: [],
       tasks: {
-        run: { name: "Run CLI", command: "go run src/main.go", runAtStart: true },
+        run: { name: "Run CLI", command: "go run ./cmd/mycli", runAtStart: true },
       },
     },
-    rootPkg: (name) => ({
-      name,
-      version: "1.0.0",
-      private: true,
-    }),
-    run: "go run src/main.go",
+    rootPkg: () => ({}),
+    run: "go run ./cmd/mycli",
   },
 
   python: {
     name: "Python",
-    keep: ["src/__init__.py", "src/__main__.py"],
-    remove: ["src/index.ts", "src/index.js", "src/main.go", "go.mod", "tsconfig.json", "packages/demo/tsconfig.json"],
+    demoDir: "demo-py",
+    remove: [
+      "src/index.ts",
+      "src/index.js",
+      "cmd",
+      "demo-go",
+      "demo-ts",
+      "demo-js",
+      "go.mod",
+      "go.work",
+      "tsconfig.json",
+    ],
     tasks: {
       setupTasks: [],
       tasks: {
-        run: { name: "Run CLI", command: "python -m src", runAtStart: true },
+        run: { name: "Run CLI", command: "python -m src.mycli", runAtStart: true },
       },
     },
     rootPkg: (name) => ({
@@ -76,6 +111,6 @@ export const languages: Record<string, LanguageConfig> = {
       version: "1.0.0",
       private: true,
     }),
-    run: "python -m src",
+    run: "python -m src.mycli",
   },
 };
