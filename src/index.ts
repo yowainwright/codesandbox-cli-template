@@ -1,0 +1,4 @@
+#!/usr/bin/env bun
+const target = new URL("../packages/demo/touched.txt", import.meta.url);
+await Bun.write(target, `Updated at: ${new Date().toISOString()}\n`);
+console.log("Touched packages/demo/touched.txt");

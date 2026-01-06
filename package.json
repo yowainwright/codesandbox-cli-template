@@ -2,8 +2,8 @@
   "name": "codesandbox-cli-template",
   "version": "1.0.0",
   "private": true,
-  "workspaces": ["cli", "packages/*"],
   "scripts": {
-    "mycli": "bun run cli/index.ts"
+    "setup": "bun run scripts/setup/index.ts",
+    "start": "bun run src/index.ts"
   }
 }

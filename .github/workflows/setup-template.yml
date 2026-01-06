@@ -1,0 +1,28 @@
+name: Setup Template
+
+on:
+  create:
+
+jobs:
+  setup:
+    if: github.event.ref_type == 'branch' && github.event.ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update repo references
+        run: |
+          REPO_NAME="${{ github.event.repository.name }}"
+          sed -i "s|yowainwright/codesandbox-cli-template|${{ github.repository }}|g" README.md
+          sed -i "s|# codesandbox-cli-template|# ${REPO_NAME}|g" README.md
+          sed -i "s|\"name\": \"codesandbox-cli-template\"|\"name\": \"${REPO_NAME}\"|g" package.json
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md package.json
+          git diff --staged --quiet || git commit -m "Setup repo from template"
+          git push

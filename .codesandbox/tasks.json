@@ -1,12 +1,10 @@
 {
   "$schema": "https://codesandbox.io/schemas/tasks.json",
-  "setupTasks": [
-    { "name": "Install", "command": "bun install" }
-  ],
+  "setupTasks": [],
   "tasks": {
     "run": {
       "name": "Run CLI",
-      "command": "bun run mycli",
+      "command": "go run src/main.go",
       "runAtStart": true
     }
   }
